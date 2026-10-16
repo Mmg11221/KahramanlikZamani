@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Ben 10 Remastered - Web & Mobil</title>
-  <meta name="description" content="Ben 10 Remastered Flash Oyunu - Tarayıcıda ve Mobil Cihazlarda (iOS, Android, Mac, PC) Tam Ekran, Sol-Sağ Tuşları ve Dönüşüm Joystick'i ile Oyna!">
+  <meta name="description" content="Ben 10 Remastered Flash Oyunu - Tarayıcıda ve Mobil Cihazlarda (iOS, Android, Mac, PC) Tam Ekran, Sol-Sağ Tuşları ve Omnitrix Dönüşüm Joystick'i ile Oyna!">
   <meta name="theme-color" content="#0a0e14">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,7 +19,6 @@
       --omni-green-glow: rgba(0, 255, 136, 0.5);
       --omni-dark: #070b0e;
       --omni-card: #0d151c;
-      --omni-card-trans: rgba(13, 21, 28, 0.88);
       --omni-border: rgba(0, 255, 136, 0.3);
       --omni-text: #e6f7ec;
       --omni-orange: #ff9900;
@@ -58,7 +57,7 @@
       overflow: hidden;
     }
 
-    /* Üst Çubuk */
+    /* Üst Menü Çubuğu */
     header {
       width: 100%;
       height: 48px;
@@ -133,7 +132,7 @@
       box-shadow: 0 0 10px var(--omni-green-glow);
     }
 
-    /* Oyun Alanı */
+    /* Oyun Sahnesi */
     #game-stage {
       position: relative;
       flex: 1;
@@ -166,7 +165,7 @@
       display: block;
     }
 
-    /* Başlangıç Katmanı */
+    /* Başlangıç Ekranı */
     #start-overlay {
       position: absolute;
       inset: 0;
@@ -281,31 +280,15 @@
       text-shadow: 0 0 12px var(--omni-green);
     }
 
-    /* 2. SAĞ TARAF: DÖNÜŞÜM JOYSTICK'İ (OMNITRIX KADRANI) */
+    /* 2. SAĞ TARAF: KÜÇÜK VE SADECE OMNITRIX LOGOLU DÖNÜŞÜM JOYSTICK'İ */
     .transform-joystick-zone {
       position: absolute;
-      top: 60px;
-      right: 20px;
-      width: 154px;
-      height: 154px;
+      bottom: 124px;
+      right: 32px;
+      width: 96px;
+      height: 96px;
       pointer-events: auto;
       touch-action: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .transform-joystick-title {
-      position: absolute;
-      top: -20px;
-      font-size: 10px;
-      font-weight: 800;
-      color: var(--omni-green);
-      letter-spacing: 1px;
-      text-shadow: 0 0 8px var(--omni-green-glow);
-      text-transform: uppercase;
-      pointer-events: none;
-      white-space: nowrap;
     }
 
     .transform-base {
@@ -313,89 +296,42 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(12, 24, 18, 0.95) 0%, rgba(5, 12, 8, 0.98) 100%);
+      background: radial-gradient(circle, rgba(14, 28, 20, 0.95) 0%, rgba(6, 14, 10, 0.98) 100%);
       border: 2px solid var(--omni-green);
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.75), inset 0 0 15px rgba(0, 255, 136, 0.2);
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.8), inset 0 0 12px rgba(0, 255, 136, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* 4 Uzaylı Göstergeleri */
-    .alien-marker {
+    /* Kadranın 4 Yön Çentiği (Sadece geometrik minimalist Omnitrix detayları) */
+    .omni-dial-notch {
       position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      background: rgba(0, 255, 136, 0.4);
       pointer-events: none;
-      font-size: 9px;
-      font-weight: 800;
-      color: rgba(255, 255, 255, 0.6);
-      transition: all 0.15s ease;
-      text-align: center;
+      border-radius: 2px;
+    }
+    .omni-dial-notch.notch-up {
+      top: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 7px;
+    }
+    .omni-dial-notch.notch-down {
+      bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 7px;
+    }
+    .omni-dial-notch.notch-left {
+      left: 4px; top: 50%; transform: translateY(-50%); width: 7px; height: 4px;
+    }
+    .omni-dial-notch.notch-right {
+      right: 4px; top: 50%; transform: translateY(-50%); width: 7px; height: 4px;
     }
 
-    .alien-marker .icon {
-      font-size: 15px;
-      line-height: 1;
-    }
-
-    .alien-marker.up {
-      top: 6px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .alien-marker.down {
-      bottom: 6px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .alien-marker.left {
-      left: 6px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
-    .alien-marker.right {
-      right: 6px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
-    /* Vurgulanan Uzaylı */
-    .alien-marker.highlighted {
-      color: #ffffff;
-      transform-origin: center;
-      filter: drop-shadow(0 0 6px var(--omni-green));
-    }
-    .alien-marker.up.highlighted {
-      transform: translateX(-50%) scale(1.22);
-      color: var(--omni-green);
-    }
-    .alien-marker.down.highlighted {
-      transform: translateX(-50%) scale(1.22);
-      color: var(--omni-green);
-    }
-    .alien-marker.left.highlighted {
-      transform: translateY(-50%) scale(1.22);
-      color: var(--omni-orange);
-    }
-    .alien-marker.right.highlighted {
-      transform: translateY(-50%) scale(1.22);
-      color: var(--omni-green);
-    }
-
-    /* Dönüşüm Joystick Topu */
+    /* Omnitrix Logolu Sürüklenebilir Joystick Topu */
     .transform-stick {
       position: absolute;
-      width: 58px;
-      height: 58px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
-      background: radial-gradient(circle, #00ff88 0%, #00883a 100%);
-      box-shadow: 0 0 16px var(--omni-green-glow), 0 4px 8px rgba(0, 0, 0, 0.6);
+      background: radial-gradient(circle, #00ff88 0%, #009944 100%);
+      box-shadow: 0 0 16px var(--omni-green-glow), 0 3px 8px rgba(0, 0, 0, 0.7);
       border: 2px solid #ffffff;
       top: 50%;
       left: 50%;
@@ -407,11 +343,18 @@
       transition: transform 0.05s ease-out;
     }
 
-    .stick-omnitrix-logo {
-      width: 22px;
-      height: 22px;
+    /* Klasik Omnitrix Kum Saati Logosu */
+    .omnitrix-logo-icon {
+      width: 24px;
+      height: 24px;
       background: #041208;
       clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      transition: transform 0.15s ease;
+    }
+
+    .transform-joystick-zone.active .transform-stick {
+      background: radial-gradient(circle, #33ff99 0%, #00cc55 100%);
+      box-shadow: 0 0 25px var(--omni-green), 0 0 40px var(--omni-green-glow);
     }
 
     /* 3. SAĞ ALT: SALDIRI VE ZIPLAMA AKSİYON BUTONLARI */
@@ -485,7 +428,7 @@
       background: radial-gradient(circle, rgba(255, 51, 85, 0.45) 0%, rgba(18, 6, 10, 0.98) 100%);
     }
 
-    /* Modal / Bilgi Ekranı */
+    /* Modal / Rehber */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -565,7 +508,7 @@
       color: var(--omni-green);
     }
 
-    /* Cihazı Yatay Çevirme Uyarısı */
+    /* Dikey Ekran İpucu */
     #rotate-hint {
       display: none;
       position: absolute;
@@ -590,14 +533,18 @@
         display: block;
       }
       .transform-joystick-zone {
-        top: 86px;
-        right: 14px;
-        width: 130px;
-        height: 130px;
+        bottom: 105px;
+        right: 18px;
+        width: 84px;
+        height: 84px;
       }
       .transform-stick {
-        width: 48px;
-        height: 48px;
+        width: 44px;
+        height: 44px;
+      }
+      .omnitrix-logo-icon {
+        width: 20px;
+        height: 20px;
       }
       .move-buttons-cluster {
         bottom: 16px;
@@ -647,7 +594,7 @@
     </div>
   </header>
 
-  <!-- Yatay Ekran Önerisi -->
+  <!-- Yatay Ekran Uyarısı -->
   <div id="rotate-hint">🔄 En iyi deneyim için telefonunuzu yatay çevirin</div>
 
   <!-- Oyun Alanı -->
@@ -659,7 +606,7 @@
       <div id="start-overlay">
         <div class="omnitrix-badge" style="width: 70px; height: 70px; border-width: 4px;"></div>
         <h2 style="color: var(--omni-green); font-size: 26px; font-weight: 900; letter-spacing: 1px;">BEN 10: SAVAGE PURSUIT</h2>
-        <p style="color: #aaa; font-size: 14px; max-width: 320px;">Remastered Web & Mobil Sürümü. Ses ve kontrolleri aktifleştirmek için tıkla!</p>
+        <p style="color: #aaa; font-size: 14px; max-width: 320px;">Remastered Web & Mobil Sürümü. Başlamak için tıkla!</p>
         
         <button class="play-btn" id="btn-start-game">
           <span>OYNA</span> ▶
@@ -683,31 +630,18 @@
       </button>
     </div>
 
-    <!-- 2. SAĞ TARAF: DÖNÜŞÜM JOYSTICK'İ (OMNITRIX) -->
+    <!-- 2. SAĞ TARAF: KÜÇÜK VE SADECE OMNITRIX LOGOLU DÖNÜŞÜM JOYSTICK'İ -->
     <div class="transform-joystick-zone" id="transform-zone">
-      <span class="transform-joystick-title">🧬 DÖNÜŞÜM JOYSTICK'İ</span>
       <div class="transform-base">
-        <!-- 4 Uzaylı Yönleri -->
-        <div class="alien-marker up" id="marker-up">
-          <span class="icon">🐕</span>
-          <span>Y.KÖPEK</span>
-        </div>
-        <div class="alien-marker left" id="marker-left">
-          <span class="icon">🔥</span>
-          <span>ATEŞ</span>
-        </div>
-        <div class="alien-marker right" id="marker-right">
-          <span class="icon">🌿</span>
-          <span>SARMAŞIK</span>
-        </div>
-        <div class="alien-marker down" id="marker-down">
-          <span class="icon">🛡️</span>
-          <span>GÜLLE</span>
-        </div>
+        <!-- 4 Minimalist Çentik -->
+        <div class="omni-dial-notch notch-up"></div>
+        <div class="omni-dial-notch notch-down"></div>
+        <div class="omni-dial-notch notch-left"></div>
+        <div class="omni-dial-notch notch-right"></div>
 
-        <!-- Sürüklenebilir Joystick Topu -->
+        <!-- Sadece Omnitrix Logolu Sürüklenebilir Joystick -->
         <div class="transform-stick" id="transform-stick">
-          <div class="stick-omnitrix-logo"></div>
+          <div class="omnitrix-logo-icon"></div>
         </div>
       </div>
     </div>
@@ -737,7 +671,7 @@
     </div>
     <div class="modal-body">
       <p style="margin-bottom: 12px; font-size: 13px; line-height: 1.5; color: #ccc;">
-        Oyun Adobe Flash emülatörü <b>Ruffle</b> ile modernize edilmiştir. Mobil cihazlarda dokunmatik butonlar ve dönüşüm joystick'i, masaüstünde klavye ile oynanır.
+        Oyun Adobe Flash emülatörü <b>Ruffle</b> ile modernize edilmiştir. Mobil cihazlarda dokunmatik butonlar ve Omnitrix joystick'i, masaüstünde klavye ile oynanır.
       </p>
 
       <table class="controls-table">
@@ -771,8 +705,8 @@
           </tr>
           <tr>
             <td>Uzaylıya Dönüşüm</td>
-            <td><span class="key-badge">Z</span> (Basılı Tut) + Yön Tuşu</td>
-            <td>Sağdaki <b>Dönüşüm Joystick'ini</b> istediğin uzaylıya doğru çekip bırak!</td>
+            <td><span class="key-badge">Z</span> (Basılı Tut) + Yön</td>
+            <td>Sağdaki <b>Omnitrix Joystick'ini</b> istediğin yöne çekip bırak!</td>
           </tr>
           <tr>
             <td>Oyunu Duraklat</td>
@@ -782,12 +716,12 @@
         </tbody>
       </table>
 
-      <h4 style="color: var(--omni-green); margin: 14px 0 6px 0; font-size: 14px;">👽 Dönüşüm Joystick Yönleri:</h4>
+      <h4 style="color: var(--omni-green); margin: 14px 0 6px 0; font-size: 14px;">👽 Omnitrix Çekme Yönleri:</h4>
       <ul style="padding-left: 20px; font-size: 13px; color: #bbb; line-height: 1.6;">
-        <li><b>Yukarı Çek:</b> Wildmutt (Yaban Köpek - Gizli mayınları koklar ve kazar)</li>
-        <li><b>Sola Çek:</b> Heatblast (Ateş Topu - Ateş fırlatır ve engelleri eritir)</li>
-        <li><b>Sağa Çek:</b> Wildvine (Vahşi Asma - Sarmaşıklarla asılır ve vurur)</li>
-        <li><b>Aşağı Çek:</b> Cannonbolt (Yıldırım Gülle - Taş duvarları kırar)</li>
+        <li><b>Yukarı:</b> Wildmutt (Yaban Köpek)</li>
+        <li><b>Sola:</b> Heatblast (Ateş Topu)</li>
+        <li><b>Sağa:</b> Wildvine (Vahşi Asma)</li>
+        <li><b>Aşağı:</b> Cannonbolt (Yıldırım Gülle)</li>
       </ul>
     </div>
   </div>
@@ -945,28 +879,17 @@
   setupHoldButton(document.getElementById("btn-attack"), KEYS.SPACE);
 
   /* ==========================================================================
-     5. SAĞ TARAF: DÖNÜŞÜM JOYSTICK'İ (OMNITRIX TRANSFORM JOYSTICK)
+     5. SAĞ TARAF: SADECE OMNITRIX LOGOLU KÜÇÜK DÖNÜŞÜM JOYSTICK'İ
      ========================================================================== */
   const transformZone = document.getElementById("transform-zone");
   const transformStick = document.getElementById("transform-stick");
-  const markerUp = document.getElementById("marker-up");
-  const markerDown = document.getElementById("marker-down");
-  const markerLeft = document.getElementById("marker-left");
-  const markerRight = document.getElementById("marker-right");
 
   let transformTouchId = null;
   let transformOrigin = { x: 0, y: 0 };
-  const JOYSTICK_MAX_DIST = 46;
-  const TRANSFORM_DEADZONE = 14;
+  const JOYSTICK_MAX_DIST = 26;
+  const TRANSFORM_DEADZONE = 9;
 
   let currentAlienDir = null; // 'up', 'down', 'left', 'right'
-
-  function clearMarkerHighlights() {
-    markerUp.classList.remove("highlighted");
-    markerDown.classList.remove("highlighted");
-    markerLeft.classList.remove("highlighted");
-    markerRight.classList.remove("highlighted");
-  }
 
   function handleTransformMove(clientX, clientY) {
     let dx = clientX - transformOrigin.x;
@@ -995,29 +918,17 @@
       }
 
       if (nextDir !== currentAlienDir) {
-        // Eski yön tuşunu bırak
         if (currentAlienDir === 'up') triggerKey(KEYS.UP, false);
         if (currentAlienDir === 'down') triggerKey(KEYS.DOWN, false);
         if (currentAlienDir === 'left') triggerKey(KEYS.LEFT, false);
         if (currentAlienDir === 'right') triggerKey(KEYS.RIGHT, false);
 
         currentAlienDir = nextDir;
-        clearMarkerHighlights();
 
-        // Yeni yön tuşuna bas ve göstergeyi parlat
-        if (nextDir === 'up') {
-          markerUp.classList.add("highlighted");
-          triggerKey(KEYS.UP, true);
-        } else if (nextDir === 'down') {
-          markerDown.classList.add("highlighted");
-          triggerKey(KEYS.DOWN, true);
-        } else if (nextDir === 'left') {
-          markerLeft.classList.add("highlighted");
-          triggerKey(KEYS.LEFT, true);
-        } else if (nextDir === 'right') {
-          markerRight.classList.add("highlighted");
-          triggerKey(KEYS.RIGHT, true);
-        }
+        if (nextDir === 'up') triggerKey(KEYS.UP, true);
+        else if (nextDir === 'down') triggerKey(KEYS.DOWN, true);
+        else if (nextDir === 'left') triggerKey(KEYS.LEFT, true);
+        else if (nextDir === 'right') triggerKey(KEYS.RIGHT, true);
       }
     } else {
       if (currentAlienDir !== null) {
@@ -1026,31 +937,30 @@
         if (currentAlienDir === 'left') triggerKey(KEYS.LEFT, false);
         if (currentAlienDir === 'right') triggerKey(KEYS.RIGHT, false);
         currentAlienDir = null;
-        clearMarkerHighlights();
       }
     }
   }
 
   function startTransformTouch(clientX, clientY) {
+    transformZone.classList.add("active");
     const rect = transformZone.getBoundingClientRect();
     transformOrigin = {
       x: rect.left + rect.width / 2,
       y: rect.top + rect.height / 2
     };
 
-    // 1. Z tuşuna bas (Omnitrix Kadranı Oyunda Açılır)
+    // Z tuşuna basılı tut (Omnitrix Menüsü Açılır)
     triggerKey(KEYS.Z, true);
     handleTransformMove(clientX, clientY);
   }
 
   function finishTransformTouch() {
+    transformZone.classList.remove("active");
     transformStick.style.transform = `translate(-50%, -50%)`;
-    clearMarkerHighlights();
 
     const chosenDir = currentAlienDir;
     currentAlienDir = null;
 
-    // Uzaylı seçildiyse: yön tuşunu azıcık basılı tutup bırak, ardından Z'yi bırakarak dönüşümü tamamla
     setTimeout(() => {
       if (chosenDir === 'up') triggerKey(KEYS.UP, false);
       if (chosenDir === 'down') triggerKey(KEYS.DOWN, false);
@@ -1058,7 +968,7 @@
       if (chosenDir === 'right') triggerKey(KEYS.RIGHT, false);
 
       setTimeout(() => {
-        // Z tuşunu bırakarak dönüşümü kilitle
+        // Z tuşunu bırakarak dönüşümü tamamla
         triggerKey(KEYS.Z, false);
       }, 70);
     }, 60);
