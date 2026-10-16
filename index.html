@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Ben 10 Remastered - Web & Mobil</title>
-  <meta name="description" content="Ben 10 Remastered Flash Oyunu - Tarayıcıda ve Mobil Cihazlarda (iOS, Android, Mac, PC) Tam Ekran ve Dokunmatik Kontrollerle Oyna!">
+  <meta name="description" content="Ben 10 Remastered Flash Oyunu - Tarayıcıda ve Mobil Cihazlarda (iOS, Android, Mac, PC) Tam Ekran, Sol-Sağ Tuşları ve Dönüşüm Joystick'i ile Oyna!">
   <meta name="theme-color" content="#0a0e14">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,16 +16,15 @@
     :root {
       --omni-green: #00ff88;
       --omni-green-dim: #00bb66;
-      --omni-green-glow: rgba(0, 255, 136, 0.45);
+      --omni-green-glow: rgba(0, 255, 136, 0.5);
       --omni-dark: #070b0e;
       --omni-card: #0d151c;
-      --omni-card-trans: rgba(13, 21, 28, 0.85);
-      --omni-border: rgba(0, 255, 136, 0.25);
+      --omni-card-trans: rgba(13, 21, 28, 0.88);
+      --omni-border: rgba(0, 255, 136, 0.3);
       --omni-text: #e6f7ec;
       --omni-orange: #ff9900;
-      --omni-blue: #00ccff;
       --omni-red: #ff3355;
-      --control-opacity: 0.85;
+      --control-opacity: 0.9;
     }
 
     * {
@@ -47,7 +46,6 @@
       touch-action: none;
     }
 
-    /* Ana Kapsayıcı */
     #app-container {
       position: relative;
       width: 100vw;
@@ -56,11 +54,11 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      background: radial-gradient(circle at center, #0f1c24 0%, #060a0d 100%);
+      background: radial-gradient(circle at center, #0e1c26 0%, #05090c 100%);
       overflow: hidden;
     }
 
-    /* Üst Çubuk (Başlık & Hızlı Butonlar) */
+    /* Üst Çubuk */
     header {
       width: 100%;
       height: 48px;
@@ -68,7 +66,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(10, 16, 22, 0.9);
+      background: rgba(8, 14, 19, 0.92);
       border-bottom: 1px solid var(--omni-border);
       z-index: 50;
       backdrop-filter: blur(8px);
@@ -135,7 +133,7 @@
       box-shadow: 0 0 10px var(--omni-green-glow);
     }
 
-    /* Oyun Alanı (Canvas Wrapper) */
+    /* Oyun Alanı */
     #game-stage {
       position: relative;
       flex: 1;
@@ -156,7 +154,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px var(--omni-border);
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.85), 0 0 15px var(--omni-border);
       border-radius: 8px;
       overflow: hidden;
       background-color: #000;
@@ -168,7 +166,7 @@
       display: block;
     }
 
-    /* Başlangıç / Yükleme / Ses İzni Katmanı */
+    /* Başlangıç Katmanı */
     #start-overlay {
       position: absolute;
       inset: 0;
@@ -188,7 +186,7 @@
       color: #041208;
       font-size: 20px;
       font-weight: 900;
-      padding: 16px 36px;
+      padding: 16px 38px;
       border-radius: 40px;
       border: none;
       cursor: pointer;
@@ -200,7 +198,7 @@
     }
 
     .play-btn:active {
-      transform: scale(0.96);
+      transform: scale(0.95);
     }
 
     .loading-spinner {
@@ -216,7 +214,9 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Dokunmatik Kontrol Katmanı */
+    /* ==========================================================================
+       DOKUNMATİK KONTROL KATMANI
+       ========================================================================== */
     #touch-controls {
       position: absolute;
       inset: 0;
@@ -226,242 +226,266 @@
       transition: opacity 0.2s ease;
     }
 
-    /* Sol Joystick Alanı */
-    .joystick-zone {
+    /* 1. SOL TARAF: SOL VE SAĞ YÖN BUTONLARI */
+    .move-buttons-cluster {
       position: absolute;
       bottom: 24px;
       left: 24px;
-      width: 160px;
-      height: 160px;
+      display: flex;
+      gap: 14px;
       pointer-events: auto;
       touch-action: none;
     }
 
-    .joystick-base {
+    .btn-move {
+      width: 78px;
+      height: 78px;
+      border-radius: 20px;
+      background: radial-gradient(circle, rgba(16, 26, 36, 0.95) 0%, rgba(8, 13, 18, 0.98) 100%);
+      border: 2px solid var(--omni-border);
+      color: var(--omni-text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7), inset 0 0 10px rgba(0, 255, 136, 0.1);
+      transition: all 0.08s ease;
+      touch-action: none;
+    }
+
+    .btn-move .move-arrow {
+      font-size: 32px;
+      line-height: 1;
+      color: var(--omni-green);
+      text-shadow: 0 0 8px var(--omni-green-glow);
+    }
+
+    .btn-move .move-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-top: 2px;
+      color: #9cd4b5;
+    }
+
+    .btn-move:active, .btn-move.active {
+      transform: scale(0.92);
+      border-color: var(--omni-green);
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.3) 0%, rgba(13, 22, 29, 0.98) 100%);
+      box-shadow: 0 0 25px var(--omni-green-glow);
+    }
+
+    .btn-move:active .move-arrow, .btn-move.active .move-arrow {
+      color: #ffffff;
+      text-shadow: 0 0 12px var(--omni-green);
+    }
+
+    /* 2. SAĞ TARAF: DÖNÜŞÜM JOYSTICK'İ (OMNITRIX KADRANI) */
+    .transform-joystick-zone {
       position: absolute;
+      top: 60px;
+      right: 20px;
+      width: 154px;
+      height: 154px;
+      pointer-events: auto;
+      touch-action: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .transform-joystick-title {
+      position: absolute;
+      top: -20px;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--omni-green);
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px var(--omni-green-glow);
+      text-transform: uppercase;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .transform-base {
+      position: relative;
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(13, 21, 28, 0.85) 0%, rgba(7, 11, 14, 0.9) 100%);
-      border: 2px solid var(--omni-border);
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(0, 255, 136, 0.15);
+      background: radial-gradient(circle, rgba(12, 24, 18, 0.95) 0%, rgba(5, 12, 8, 0.98) 100%);
+      border: 2px solid var(--omni-green);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.75), inset 0 0 15px rgba(0, 255, 136, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .joystick-guide-arrows {
+    /* 4 Uzaylı Göstergeleri */
+    .alien-marker {
       position: absolute;
-      inset: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       pointer-events: none;
+      font-size: 9px;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.6);
+      transition: all 0.15s ease;
+      text-align: center;
     }
 
-    .guide-arrow {
-      position: absolute;
-      font-size: 14px;
-      color: rgba(0, 255, 136, 0.4);
-      font-weight: bold;
+    .alien-marker .icon {
+      font-size: 15px;
+      line-height: 1;
     }
-    .guide-arrow.up { top: 4px; left: 50%; transform: translateX(-50%); }
-    .guide-arrow.down { bottom: 4px; left: 50%; transform: translateX(-50%); }
-    .guide-arrow.left { left: 4px; top: 50%; transform: translateY(-50%); }
-    .guide-arrow.right { right: 4px; top: 50%; transform: translateY(-50%); }
 
-    .joystick-stick {
+    .alien-marker.up {
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .alien-marker.down {
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .alien-marker.left {
+      left: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .alien-marker.right {
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* Vurgulanan Uzaylı */
+    .alien-marker.highlighted {
+      color: #ffffff;
+      transform-origin: center;
+      filter: drop-shadow(0 0 6px var(--omni-green));
+    }
+    .alien-marker.up.highlighted {
+      transform: translateX(-50%) scale(1.22);
+      color: var(--omni-green);
+    }
+    .alien-marker.down.highlighted {
+      transform: translateX(-50%) scale(1.22);
+      color: var(--omni-green);
+    }
+    .alien-marker.left.highlighted {
+      transform: translateY(-50%) scale(1.22);
+      color: var(--omni-orange);
+    }
+    .alien-marker.right.highlighted {
+      transform: translateY(-50%) scale(1.22);
+      color: var(--omni-green);
+    }
+
+    /* Dönüşüm Joystick Topu */
+    .transform-stick {
       position: absolute;
-      width: 64px;
-      height: 64px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
-      background: radial-gradient(circle, #00ff88 0%, #009944 100%);
-      box-shadow: 0 0 15px var(--omni-green-glow), 0 4px 8px rgba(0,0,0,0.6);
+      background: radial-gradient(circle, #00ff88 0%, #00883a 100%);
+      box-shadow: 0 0 16px var(--omni-green-glow), 0 4px 8px rgba(0, 0, 0, 0.6);
       border: 2px solid #ffffff;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       pointer-events: none;
-      transition: transform 0.05s ease-out;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: transform 0.05s ease-out;
     }
 
-    .stick-icon {
-      width: 24px;
-      height: 24px;
+    .stick-omnitrix-logo {
+      width: 22px;
+      height: 22px;
       background: #041208;
       clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
     }
 
-    /* Sağ Taraf - Aksiyon Tuşları */
+    /* 3. SAĞ ALT: SALDIRI VE ZIPLAMA AKSİYON BUTONLARI */
     .action-cluster {
       position: absolute;
       bottom: 24px;
       right: 24px;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       gap: 16px;
       pointer-events: auto;
       touch-action: none;
     }
 
-    .buttons-column {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      align-items: center;
-    }
-
     .action-btn {
-      width: 72px;
-      height: 72px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(20, 32, 42, 0.95) 0%, rgba(9, 14, 18, 0.95) 100%);
-      border: 2px solid var(--omni-border);
       color: var(--omni-text);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
+      gap: 3px;
       cursor: pointer;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0, 255, 136, 0.1);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
       touch-action: none;
-      transition: all 0.1s ease;
-      font-size: 11px;
-      font-weight: 700;
+      transition: all 0.08s ease;
+      font-weight: 800;
       letter-spacing: 0.5px;
     }
 
-    .action-btn:active, .action-btn.active {
-      transform: scale(0.92);
-      border-color: var(--omni-green);
-      box-shadow: 0 0 20px var(--omni-green-glow);
-      background: radial-gradient(circle, rgba(0, 255, 136, 0.3) 0%, rgba(13, 21, 28, 0.95) 100%);
+    /* Zıplama Butonu */
+    .action-btn.btn-jump {
+      width: 74px;
+      height: 74px;
+      border: 2px solid rgba(0, 255, 136, 0.5);
+      background: radial-gradient(circle, rgba(16, 32, 24, 0.95) 0%, rgba(6, 16, 10, 0.98) 100%);
+      font-size: 11px;
     }
 
-    .action-btn.btn-jump {
-      border-color: rgba(0, 255, 136, 0.5);
+    .action-btn.btn-jump .btn-icon {
+      font-size: 26px;
+      line-height: 1;
+      color: var(--omni-green);
     }
+
     .action-btn.btn-jump:active, .action-btn.btn-jump.active {
+      transform: scale(0.92);
       border-color: #00ff88;
       box-shadow: 0 0 25px var(--omni-green-glow);
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.4) 0%, rgba(6, 16, 10, 0.98) 100%);
     }
 
+    /* Saldırı Butonu */
     .action-btn.btn-attack {
-      width: 80px;
-      height: 80px;
-      border-color: rgba(255, 51, 85, 0.5);
-      background: radial-gradient(circle, rgba(35, 18, 24, 0.95) 0%, rgba(15, 8, 12, 0.95) 100%);
-    }
-    .action-btn.btn-attack:active, .action-btn.btn-attack.active {
-      border-color: #ff3355;
-      box-shadow: 0 0 25px rgba(255, 51, 85, 0.5);
-      background: radial-gradient(circle, rgba(255, 51, 85, 0.35) 0%, rgba(15, 8, 12, 0.95) 100%);
+      width: 84px;
+      height: 84px;
+      border: 2px solid rgba(255, 51, 85, 0.6);
+      background: radial-gradient(circle, rgba(40, 16, 22, 0.95) 0%, rgba(18, 6, 10, 0.98) 100%);
+      font-size: 12px;
     }
 
-    .action-btn.btn-crouch {
-      width: 58px;
-      height: 58px;
-      font-size: 10px;
-    }
-
-    .btn-icon {
-      font-size: 22px;
+    .action-btn.btn-attack .btn-icon {
+      font-size: 30px;
       line-height: 1;
     }
 
-    /* Dönüşüm (Omnitrix) Kontrolleri */
-    .transform-container {
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      pointer-events: auto;
-      touch-action: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
+    .action-btn.btn-attack:active, .action-btn.btn-attack.active {
+      transform: scale(0.92);
+      border-color: #ff3355;
+      box-shadow: 0 0 28px rgba(255, 51, 85, 0.6);
+      background: radial-gradient(circle, rgba(255, 51, 85, 0.45) 0%, rgba(18, 6, 10, 0.98) 100%);
     }
 
-    .omnitrix-dial-btn {
-      width: 66px;
-      height: 66px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #102518 0%, #06110a 100%);
-      border: 3px solid var(--omni-green);
-      box-shadow: 0 0 15px var(--omni-green-glow), inset 0 0 12px rgba(0, 255, 136, 0.3);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-weight: 800;
-      font-size: 10px;
-      color: var(--omni-green);
-      transition: all 0.15s ease;
-    }
-
-    .omnitrix-dial-btn:active, .omnitrix-dial-btn.active {
-      transform: scale(0.93);
-      box-shadow: 0 0 30px var(--omni-green), inset 0 0 20px var(--omni-green);
-      background: #00ff88;
-      color: #041208;
-    }
-
-    .omnitrix-dial-btn .dial-symbol {
-      width: 22px;
-      height: 22px;
-      background: var(--omni-green);
-      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-      margin-bottom: 2px;
-    }
-
-    .omnitrix-dial-btn:active .dial-symbol,
-    .omnitrix-dial-btn.active .dial-symbol {
-      background: #041208;
-    }
-
-    /* Hızlı Uzaylı Seçim Paneli (Quick Aliens) */
-    .quick-aliens-panel {
-      position: absolute;
-      top: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 8px;
-      background: rgba(10, 16, 22, 0.85);
-      padding: 6px 12px;
-      border-radius: 30px;
-      border: 1px solid var(--omni-border);
-      pointer-events: auto;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    }
-
-    .alien-btn {
-      padding: 6px 12px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--omni-text);
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.15s ease;
-    }
-
-    .alien-btn:active, .alien-btn.active {
-      background: var(--omni-green);
-      color: #041208;
-      border-color: var(--omni-green);
-      transform: scale(0.94);
-      box-shadow: 0 0 12px var(--omni-green-glow);
-    }
-
-    /* Bilgi & Nasıl Oynanır Modalı */
+    /* Modal / Bilgi Ekranı */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -479,7 +503,7 @@
       border: 2px solid var(--omni-green);
       box-shadow: 0 0 30px var(--omni-green-glow);
       border-radius: 12px;
-      max-width: 520px;
+      max-width: 500px;
       width: 100%;
       max-height: 85vh;
       overflow-y: auto;
@@ -541,7 +565,7 @@
       color: var(--omni-green);
     }
 
-    /* Cihazı Yatay Çevir Uyarısı (Dikey Modda İpucu) */
+    /* Cihazı Yatay Çevirme Uyarısı */
     #rotate-hint {
       display: none;
       position: absolute;
@@ -565,31 +589,37 @@
       #rotate-hint {
         display: block;
       }
-      .quick-aliens-panel {
+      .transform-joystick-zone {
         top: 86px;
+        right: 14px;
+        width: 130px;
+        height: 130px;
       }
-      .joystick-zone {
+      .transform-stick {
+        width: 48px;
+        height: 48px;
+      }
+      .move-buttons-cluster {
         bottom: 16px;
         left: 14px;
-        width: 135px;
-        height: 135px;
+        gap: 10px;
       }
-      .joystick-stick {
-        width: 54px;
-        height: 54px;
+      .btn-move {
+        width: 68px;
+        height: 68px;
       }
       .action-cluster {
         bottom: 16px;
         right: 14px;
-        gap: 10px;
+        gap: 12px;
       }
-      .action-btn {
-        width: 62px;
-        height: 62px;
+      .action-btn.btn-jump {
+        width: 66px;
+        height: 66px;
       }
       .action-btn.btn-attack {
-        width: 70px;
-        height: 70px;
+        width: 74px;
+        height: 74px;
       }
     }
   </style>
@@ -597,7 +627,7 @@
 <body>
 
 <div id="app-container">
-  <!-- Üst Çubuk -->
+  <!-- Üst Menü Çubuğu -->
   <header>
     <div class="brand">
       <div class="omnitrix-badge"></div>
@@ -617,23 +647,15 @@
     </div>
   </header>
 
-  <!-- Yatay Çevirme İpucu -->
+  <!-- Yatay Ekran Önerisi -->
   <div id="rotate-hint">🔄 En iyi deneyim için telefonunuzu yatay çevirin</div>
-
-  <!-- Hızlı Uzaylı Dönüşüm Çubuğu -->
-  <div class="quick-aliens-panel" id="quick-aliens" title="Tek dokunuşla dönüş">
-    <button class="alien-btn" data-alien="wildmutt">🐕 Yaban Köpek (⬆️)</button>
-    <button class="alien-btn" data-alien="heatblast">🔥 Ateş Topu (⬅️)</button>
-    <button class="alien-btn" data-alien="wildvine">🌿 Sarmaşık (➡️)</button>
-    <button class="alien-btn" data-alien="cannonbolt">🛡️ Gülle (⬇️)</button>
-  </div>
 
   <!-- Oyun Alanı -->
   <main id="game-stage">
     <div id="player-wrapper">
       <div id="player-container" style="width: 100%; height: 100%;"></div>
 
-      <!-- Başlat & Ses İzni Katmanı -->
+      <!-- Başlat Katmanı -->
       <div id="start-overlay">
         <div class="omnitrix-badge" style="width: 70px; height: 70px; border-width: 4px;"></div>
         <h2 style="color: var(--omni-green); font-size: 26px; font-weight: 900; letter-spacing: 1px;">BEN 10: SAVAGE PURSUIT</h2>
@@ -647,53 +669,61 @@
     </div>
   </main>
 
-  <!-- Dokunmatik Kontroller -->
+  <!-- Dokunmatik Kontroller Katmanı -->
   <div id="touch-controls">
-    <!-- Sol Joystick (Yön & Hareket) -->
-    <div class="joystick-zone" id="joystick-zone">
-      <div class="joystick-base">
-        <div class="joystick-guide-arrows">
-          <span class="guide-arrow up">▲ ZIPLA</span>
-          <span class="guide-arrow down">▼ EĞİL</span>
-          <span class="guide-arrow left">◀ SOL</span>
-          <span class="guide-arrow right">SAĞ ▶</span>
-        </div>
-        <div class="joystick-stick" id="joystick-stick">
-          <div class="stick-icon"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sağ Taraf: Dönüşüm (Z) Dial Butonu -->
-    <div class="transform-container">
-      <button class="omnitrix-dial-btn" id="btn-transform" title="Dönüşüm Kadranı (Z)">
-        <div class="dial-symbol"></div>
-        <span>DÖNÜŞÜM</span>
+    <!-- 1. SOL TARAF: SOL VE SAĞ BUTONLARI -->
+    <div class="move-buttons-cluster">
+      <button class="btn-move" id="btn-move-left" title="Sola Koş (Sol Ok)">
+        <span class="move-arrow">◀</span>
+        <span class="move-label">SOL</span>
+      </button>
+      <button class="btn-move" id="btn-move-right" title="Sağa Koş (Sağ Ok)">
+        <span class="move-arrow">▶</span>
+        <span class="move-label">SAĞ</span>
       </button>
     </div>
 
-    <!-- Sağ Taraf: Aksiyon Butonları (Saldırı, Zıplama, Eğilme) -->
-    <div class="action-cluster">
-      <div class="buttons-column">
-        <!-- Zıplama Butonu -->
-        <button class="action-btn btn-jump" id="btn-jump" title="Zıpla (Yukarı Ok)">
-          <span class="btn-icon">▲</span>
-          <span>ZIPLA</span>
-        </button>
-        <!-- Eğilme / Kayma Butonu -->
-        <button class="action-btn btn-crouch" id="btn-crouch" title="Eğil (Aşağı Ok)">
-          <span class="btn-icon">▼</span>
-          <span>EĞİL</span>
-        </button>
-      </div>
+    <!-- 2. SAĞ TARAF: DÖNÜŞÜM JOYSTICK'İ (OMNITRIX) -->
+    <div class="transform-joystick-zone" id="transform-zone">
+      <span class="transform-joystick-title">🧬 DÖNÜŞÜM JOYSTICK'İ</span>
+      <div class="transform-base">
+        <!-- 4 Uzaylı Yönleri -->
+        <div class="alien-marker up" id="marker-up">
+          <span class="icon">🐕</span>
+          <span>Y.KÖPEK</span>
+        </div>
+        <div class="alien-marker left" id="marker-left">
+          <span class="icon">🔥</span>
+          <span>ATEŞ</span>
+        </div>
+        <div class="alien-marker right" id="marker-right">
+          <span class="icon">🌿</span>
+          <span>SARMAŞIK</span>
+        </div>
+        <div class="alien-marker down" id="marker-down">
+          <span class="icon">🛡️</span>
+          <span>GÜLLE</span>
+        </div>
 
-      <div class="buttons-column">
-        <!-- Saldırı Butonu -->
-        <button class="action-btn btn-attack" id="btn-attack" title="Saldırı / Özel Güç (Boşluk)">
-          <span class="btn-icon">💥</span>
-          <span>SALDIRI</span>
-        </button>
+        <!-- Sürüklenebilir Joystick Topu -->
+        <div class="transform-stick" id="transform-stick">
+          <div class="stick-omnitrix-logo"></div>
+        </div>
       </div>
+    </div>
+
+    <!-- 3. SAĞ ALT: SALDIRI VE ZIPLAMA BUTONLARI -->
+    <div class="action-cluster">
+      <!-- Zıplama Butonu -->
+      <button class="action-btn btn-jump" id="btn-jump" title="Zıpla (Yukarı Ok)">
+        <span class="btn-icon">▲</span>
+        <span>ZIPLA</span>
+      </button>
+      <!-- Saldırı Butonu -->
+      <button class="action-btn btn-attack" id="btn-attack" title="Saldırı (Boşluk / Space)">
+        <span class="btn-icon">💥</span>
+        <span>SALDIRI</span>
+      </button>
     </div>
   </div>
 </div>
@@ -707,7 +737,7 @@
     </div>
     <div class="modal-body">
       <p style="margin-bottom: 12px; font-size: 13px; line-height: 1.5; color: #ccc;">
-        Bu oyun Adobe Flash emülatörü <b>Ruffle</b> ile modernize edilmiştir. Mobil cihazlarda dokunmatik joystick ve butonlar, masaüstünde ise klavye ile oynanabilir.
+        Oyun Adobe Flash emülatörü <b>Ruffle</b> ile modernize edilmiştir. Mobil cihazlarda dokunmatik butonlar ve dönüşüm joystick'i, masaüstünde klavye ile oynanır.
       </p>
 
       <table class="controls-table">
@@ -720,29 +750,29 @@
         </thead>
         <tbody>
           <tr>
-            <td>Sağa / Sola Hareket</td>
-            <td><span class="key-badge">◀</span> <span class="key-badge">▶</span></td>
-            <td>Sol Joystick (Sağ / Sol)</td>
+            <td>Sola Koş</td>
+            <td><span class="key-badge">◀</span></td>
+            <td>Sol <b>SOL</b> Tuşu</td>
+          </tr>
+          <tr>
+            <td>Sağa Koş</td>
+            <td><span class="key-badge">▶</span></td>
+            <td>Sol <b>SAĞ</b> Tuşu</td>
           </tr>
           <tr>
             <td>Zıpla / Tırman</td>
             <td><span class="key-badge">▲</span></td>
-            <td>Sol Joystick (Yukarı) veya <b>ZIPLA</b> Tuşu</td>
-          </tr>
-          <tr>
-            <td>Eğil / Yuvarlan</td>
-            <td><span class="key-badge">▼</span></td>
-            <td>Sol Joystick (Aşağı) veya <b>EĞİL</b> Tuşu</td>
+            <td>Sağ <b>ZIPLA</b> Tuşu</td>
           </tr>
           <tr>
             <td>Saldırı / Ateş</td>
             <td><span class="key-badge">SPACE</span></td>
-            <td>Kırmızı <b>SALDIRI</b> Tuşu</td>
+            <td>Sağ Kırmızı <b>SALDIRI</b> Tuşu</td>
           </tr>
           <tr>
-            <td>Dönüşüm (Omnitrix)</td>
-            <td><span class="key-badge">Z</span> (Basılı Tut) + Yön Tuşları</td>
-            <td>Yeşil <b>DÖNÜŞÜM</b> Tuşuna bas veya üstteki <b>Uzaylı Butonları</b>na dokun!</td>
+            <td>Uzaylıya Dönüşüm</td>
+            <td><span class="key-badge">Z</span> (Basılı Tut) + Yön Tuşu</td>
+            <td>Sağdaki <b>Dönüşüm Joystick'ini</b> istediğin uzaylıya doğru çekip bırak!</td>
           </tr>
           <tr>
             <td>Oyunu Duraklat</td>
@@ -752,12 +782,12 @@
         </tbody>
       </table>
 
-      <h4 style="color: var(--omni-green); margin: 14px 0 6px 0; font-size: 14px;">👽 Uzaylı Yönleri (Z Basılıyken):</h4>
+      <h4 style="color: var(--omni-green); margin: 14px 0 6px 0; font-size: 14px;">👽 Dönüşüm Joystick Yönleri:</h4>
       <ul style="padding-left: 20px; font-size: 13px; color: #bbb; line-height: 1.6;">
-        <li><b>Yukarı (▲):</b> Wildmutt (Yaban Köpek - Gizli mayınları koklar ve kazar)</li>
-        <li><b>Sol (◀):</b> Heatblast (Ateş Topu - Ateş fırlatır ve engelleri eritir)</li>
-        <li><b>Sağ (▶):</b> Wildvine (Vahşi Asma - Sarmaşıklarla asılır ve vurur)</li>
-        <li><b>Aşağı (▼):</b> Cannonbolt (Yıldırım Gülle - Taş duvarları kırar)</li>
+        <li><b>Yukarı Çek:</b> Wildmutt (Yaban Köpek - Gizli mayınları koklar ve kazar)</li>
+        <li><b>Sola Çek:</b> Heatblast (Ateş Topu - Ateş fırlatır ve engelleri eritir)</li>
+        <li><b>Sağa Çek:</b> Wildvine (Vahşi Asma - Sarmaşıklarla asılır ve vurur)</li>
+        <li><b>Aşağı Çek:</b> Cannonbolt (Yıldırım Gülle - Taş duvarları kırar)</li>
       </ul>
     </div>
   </div>
@@ -765,7 +795,7 @@
 
 <script>
   /* ==========================================================================
-     1. KLAVYE SİMÜLASYONU VE FLASH OLAY GÖNDERİCİSİ
+     1. KLAVYE VE FLASH ETKİNLİK SİSTEMİ
      ========================================================================== */
   const KEYS = {
     LEFT:   { key: 'ArrowLeft',  code: 'ArrowLeft',  keyCode: 37 },
@@ -806,7 +836,6 @@
       Object.defineProperty(evt, 'which', { get: () => keyObj.keyCode });
     } catch(e) {}
 
-    // Ruffle player bileşeni ve canvas'a gönder
     if (rufflePlayerInstance) {
       rufflePlayerInstance.dispatchEvent(evt);
       if (rufflePlayerInstance.shadowRoot) {
@@ -817,7 +846,6 @@
     window.dispatchEvent(evt);
     document.dispatchEvent(evt);
 
-    // Titreşim (haptic feedback)
     if (isDown && navigator.vibrate) {
       navigator.vibrate(10);
     }
@@ -851,7 +879,6 @@
     });
   }
 
-  // Oyunu Başlat Butonu
   const btnStartGame = document.getElementById("btn-start-game");
   const startOverlay = document.getElementById("start-overlay");
   const loadingSpinner = document.getElementById("loading-spinner");
@@ -865,7 +892,6 @@
       if (rufflePlayerInstance.focus) {
         rufflePlayerInstance.focus();
       }
-      // Ekran uyanık tutma (Wake Lock)
       if ('wakeLock' in navigator) {
         navigator.wakeLock.request('screen').catch(() => {});
       }
@@ -878,158 +904,10 @@
   });
 
   /* ==========================================================================
-     3. SOL VİRTUAL JOYSTICK (HAREKET KONTROLÜ)
+     3. SOL TARAF: SOL VE SAĞ DOKUNMATİK BUTONLARI
      ========================================================================== */
-  const joystickZone = document.getElementById("joystick-zone");
-  const joystickStick = document.getElementById("joystick-stick");
-  let joystickTouchId = null;
-  let joystickOrigin = { x: 0, y: 0 };
-  const JOYSTICK_RADIUS = 50;
-  const DEADZONE = 12;
-
-  let currentJoyState = {
-    left: false,
-    right: false,
-    up: false,
-    down: false
-  };
-
-  function updateJoystickKeys(x, y) {
-    const dist = Math.hypot(x, y);
-
-    let nextLeft = false;
-    let nextRight = false;
-    let nextUp = false;
-    let nextDown = false;
-
-    if (dist > DEADZONE) {
-      const angle = Math.atan2(y, x); // Radyan: -PI to +PI
-      const deg = angle * (180 / Math.PI); // -180 to +180
-
-      // Sağa: -45 ile +45 derece arası
-      // Aşağı: 45 ile 135 derece arası
-      // Yukarı: -135 ile -45 derece arası
-      // Sola: 135'ten büyük veya -135'ten küçük
-
-      if (deg > -65 && deg < 65) {
-        nextRight = true;
-      }
-      if (deg < -115 || deg > 115) {
-        nextLeft = true;
-      }
-      if (deg > 25 && deg < 155) {
-        nextDown = true;
-      }
-      if (deg < -25 && deg > -155) {
-        nextUp = true;
-      }
-    }
-
-    // Tuş durumlarını güncelle
-    if (nextLeft !== currentJoyState.left) {
-      currentJoyState.left = nextLeft;
-      triggerKey(KEYS.LEFT, nextLeft);
-    }
-    if (nextRight !== currentJoyState.right) {
-      currentJoyState.right = nextRight;
-      triggerKey(KEYS.RIGHT, nextRight);
-    }
-    if (nextUp !== currentJoyState.up) {
-      currentJoyState.up = nextUp;
-      triggerKey(KEYS.UP, nextUp);
-    }
-    if (nextDown !== currentJoyState.down) {
-      currentJoyState.down = nextDown;
-      triggerKey(KEYS.DOWN, nextDown);
-    }
-  }
-
-  function resetJoystick() {
-    joystickStick.style.transform = `translate(-50%, -50%)`;
-    if (currentJoyState.left)  { currentJoyState.left  = false; triggerKey(KEYS.LEFT,  false); }
-    if (currentJoyState.right) { currentJoyState.right = false; triggerKey(KEYS.RIGHT, false); }
-    if (currentJoyState.up)    { currentJoyState.up    = false; triggerKey(KEYS.UP,    false); }
-    if (currentJoyState.down)  { currentJoyState.down  = false; triggerKey(KEYS.DOWN,  false); }
-    joystickTouchId = null;
-  }
-
-  joystickZone.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    if (joystickTouchId !== null) return;
-    const touch = e.changedTouches[0];
-    joystickTouchId = touch.identifier;
-    const rect = joystickZone.getBoundingClientRect();
-    joystickOrigin = {
-      x: rect.left + rect.width / 2,
-      y: rect.top + rect.height / 2
-    };
-    handleJoystickMove(touch.clientX, touch.clientY);
-  }, { passive: false });
-
-  window.addEventListener("touchmove", (e) => {
-    if (joystickTouchId === null) return;
-    for (let i = 0; i < e.changedTouches.length; i++) {
-      const touch = e.changedTouches[i];
-      if (touch.identifier === joystickTouchId) {
-        e.preventDefault();
-        handleJoystickMove(touch.clientX, touch.clientY);
-        break;
-      }
-    }
-  }, { passive: false });
-
-  function endTouch(e) {
-    if (joystickTouchId === null) return;
-    for (let i = 0; i < e.changedTouches.length; i++) {
-      if (e.changedTouches[i].identifier === joystickTouchId) {
-        resetJoystick();
-        break;
-      }
-    }
-  }
-
-  window.addEventListener("touchend", endTouch);
-  window.addEventListener("touchcancel", endTouch);
-
-  function handleJoystickMove(clientX, clientY) {
-    let dx = clientX - joystickOrigin.x;
-    let dy = clientY - joystickOrigin.y;
-    const distance = Math.hypot(dx, dy);
-
-    if (distance > JOYSTICK_RADIUS) {
-      dx = (dx / distance) * JOYSTICK_RADIUS;
-      dy = (dy / distance) * JOYSTICK_RADIUS;
-    }
-
-    joystickStick.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-    updateJoystickKeys(dx, dy);
-  }
-
-  // Masaüstü / Fare ile Joystick Desteği
-  let mouseJoyActive = false;
-  joystickZone.addEventListener("mousedown", (e) => {
-    mouseJoyActive = true;
-    const rect = joystickZone.getBoundingClientRect();
-    joystickOrigin = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
-    handleJoystickMove(e.clientX, e.clientY);
-  });
-  window.addEventListener("mousemove", (e) => {
-    if (mouseJoyActive) {
-      handleJoystickMove(e.clientX, e.clientY);
-    }
-  });
-  window.addEventListener("mouseup", () => {
-    if (mouseJoyActive) {
-      mouseJoyActive = false;
-      resetJoystick();
-    }
-  });
-
-  /* ==========================================================================
-     4. AKSİYON BUTONLARI (SALDIRI, ZIPLA, EĞİL, DÖNÜŞÜM)
-     ========================================================================== */
-  function bindTouchButton(element, keyObj) {
-    let touchId = null;
+  function setupHoldButton(element, keyObj) {
+    let activeTouchId = null;
 
     const start = (e) => {
       e.preventDefault();
@@ -1041,89 +919,207 @@
       e.preventDefault();
       element.classList.remove("active");
       triggerKey(keyObj, false);
+      activeTouchId = null;
     };
 
     element.addEventListener("touchstart", (e) => {
-      touchId = e.changedTouches[0].identifier;
+      activeTouchId = e.changedTouches[0].identifier;
       start(e);
     }, { passive: false });
 
-    element.addEventListener("touchend", (e) => {
-      stop(e);
-      touchId = null;
-    });
+    element.addEventListener("touchend", stop);
+    element.addEventListener("touchcancel", stop);
 
-    element.addEventListener("touchcancel", (e) => {
-      stop(e);
-      touchId = null;
-    });
-
-    // Fare desteği
     element.addEventListener("mousedown", start);
     element.addEventListener("mouseup", stop);
     element.addEventListener("mouseleave", stop);
   }
 
-  bindTouchButton(document.getElementById("btn-jump"), KEYS.UP);
-  bindTouchButton(document.getElementById("btn-crouch"), KEYS.DOWN);
-  bindTouchButton(document.getElementById("btn-attack"), KEYS.SPACE);
-  bindTouchButton(document.getElementById("btn-transform"), KEYS.Z);
+  setupHoldButton(document.getElementById("btn-move-left"), KEYS.LEFT);
+  setupHoldButton(document.getElementById("btn-move-right"), KEYS.RIGHT);
 
   /* ==========================================================================
-     5. HIZLI UZAYLI DÖNÜŞÜM MAKROSU (TEK DOKUNUŞLA DÖNÜŞÜM)
+     4. SAĞ ALT: SALDIRI VE ZIPLAMA BUTONLARI
      ========================================================================== */
-  const ALIEN_DIRECTIONS = {
-    wildmutt: KEYS.UP,      // Yaban Köpek (Yukarı)
-    heatblast: KEYS.LEFT,   // Ateş Topu (Sol)
-    wildvine: KEYS.RIGHT,   // Sarmaşık (Sağ)
-    cannonbolt: KEYS.DOWN   // Gülle (Aşağı)
-  };
+  setupHoldButton(document.getElementById("btn-jump"), KEYS.UP);
+  setupHoldButton(document.getElementById("btn-attack"), KEYS.SPACE);
 
-  let isTransforming = false;
-  function performAlienTransform(alienKey) {
-    if (isTransforming) return;
-    isTransforming = true;
+  /* ==========================================================================
+     5. SAĞ TARAF: DÖNÜŞÜM JOYSTICK'İ (OMNITRIX TRANSFORM JOYSTICK)
+     ========================================================================== */
+  const transformZone = document.getElementById("transform-zone");
+  const transformStick = document.getElementById("transform-stick");
+  const markerUp = document.getElementById("marker-up");
+  const markerDown = document.getElementById("marker-down");
+  const markerLeft = document.getElementById("marker-left");
+  const markerRight = document.getElementById("marker-right");
 
-    const dirKey = ALIEN_DIRECTIONS[alienKey];
-    if (!dirKey) { isTransforming = false; return; }
+  let transformTouchId = null;
+  let transformOrigin = { x: 0, y: 0 };
+  const JOYSTICK_MAX_DIST = 46;
+  const TRANSFORM_DEADZONE = 14;
 
-    // 1. Z tuşuna basılı tut (Omnitrix Kadranı Açılır)
-    triggerKey(KEYS.Z, true);
+  let currentAlienDir = null; // 'up', 'down', 'left', 'right'
 
-    setTimeout(() => {
-      // 2. İlgili yön tuşuna bas (Uzaylı Seçilir)
-      triggerKey(dirKey, true);
-
-      setTimeout(() => {
-        // 3. Yön tuşunu bırak
-        triggerKey(dirKey, false);
-
-        setTimeout(() => {
-          // 4. Z tuşunu bırak (Dönüşüm Tamamlanır!)
-          triggerKey(KEYS.Z, false);
-          isTransforming = false;
-        }, 80);
-      }, 100);
-    }, 60);
+  function clearMarkerHighlights() {
+    markerUp.classList.remove("highlighted");
+    markerDown.classList.remove("highlighted");
+    markerLeft.classList.remove("highlighted");
+    markerRight.classList.remove("highlighted");
   }
 
-  document.querySelectorAll(".alien-btn").forEach(btn => {
-    const alien = btn.getAttribute("data-alien");
-    const onSelect = (e) => {
-      e.preventDefault();
-      btn.classList.add("active");
-      performAlienTransform(alien);
-      setTimeout(() => btn.classList.remove("active"), 250);
+  function handleTransformMove(clientX, clientY) {
+    let dx = clientX - transformOrigin.x;
+    let dy = clientY - transformOrigin.y;
+    const distance = Math.hypot(dx, dy);
+
+    if (distance > JOYSTICK_MAX_DIST) {
+      dx = (dx / distance) * JOYSTICK_MAX_DIST;
+      dy = (dy / distance) * JOYSTICK_MAX_DIST;
+    }
+
+    transformStick.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+
+    if (distance > TRANSFORM_DEADZONE) {
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI); // -180 to +180
+
+      let nextDir = null;
+      if (angle >= -135 && angle < -45) {
+        nextDir = 'up'; // Wildmutt (Yaban Köpek)
+      } else if (angle >= 45 && angle < 135) {
+        nextDir = 'down'; // Cannonbolt (Yıldırım Gülle)
+      } else if (angle >= -45 && angle < 45) {
+        nextDir = 'right'; // Wildvine (Vahşi Asma)
+      } else {
+        nextDir = 'left'; // Heatblast (Ateş Topu)
+      }
+
+      if (nextDir !== currentAlienDir) {
+        // Eski yön tuşunu bırak
+        if (currentAlienDir === 'up') triggerKey(KEYS.UP, false);
+        if (currentAlienDir === 'down') triggerKey(KEYS.DOWN, false);
+        if (currentAlienDir === 'left') triggerKey(KEYS.LEFT, false);
+        if (currentAlienDir === 'right') triggerKey(KEYS.RIGHT, false);
+
+        currentAlienDir = nextDir;
+        clearMarkerHighlights();
+
+        // Yeni yön tuşuna bas ve göstergeyi parlat
+        if (nextDir === 'up') {
+          markerUp.classList.add("highlighted");
+          triggerKey(KEYS.UP, true);
+        } else if (nextDir === 'down') {
+          markerDown.classList.add("highlighted");
+          triggerKey(KEYS.DOWN, true);
+        } else if (nextDir === 'left') {
+          markerLeft.classList.add("highlighted");
+          triggerKey(KEYS.LEFT, true);
+        } else if (nextDir === 'right') {
+          markerRight.classList.add("highlighted");
+          triggerKey(KEYS.RIGHT, true);
+        }
+      }
+    } else {
+      if (currentAlienDir !== null) {
+        if (currentAlienDir === 'up') triggerKey(KEYS.UP, false);
+        if (currentAlienDir === 'down') triggerKey(KEYS.DOWN, false);
+        if (currentAlienDir === 'left') triggerKey(KEYS.LEFT, false);
+        if (currentAlienDir === 'right') triggerKey(KEYS.RIGHT, false);
+        currentAlienDir = null;
+        clearMarkerHighlights();
+      }
+    }
+  }
+
+  function startTransformTouch(clientX, clientY) {
+    const rect = transformZone.getBoundingClientRect();
+    transformOrigin = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2
     };
 
-    btn.addEventListener("touchstart", onSelect, { passive: false });
-    btn.addEventListener("click", onSelect);
+    // 1. Z tuşuna bas (Omnitrix Kadranı Oyunda Açılır)
+    triggerKey(KEYS.Z, true);
+    handleTransformMove(clientX, clientY);
+  }
+
+  function finishTransformTouch() {
+    transformStick.style.transform = `translate(-50%, -50%)`;
+    clearMarkerHighlights();
+
+    const chosenDir = currentAlienDir;
+    currentAlienDir = null;
+
+    // Uzaylı seçildiyse: yön tuşunu azıcık basılı tutup bırak, ardından Z'yi bırakarak dönüşümü tamamla
+    setTimeout(() => {
+      if (chosenDir === 'up') triggerKey(KEYS.UP, false);
+      if (chosenDir === 'down') triggerKey(KEYS.DOWN, false);
+      if (chosenDir === 'left') triggerKey(KEYS.LEFT, false);
+      if (chosenDir === 'right') triggerKey(KEYS.RIGHT, false);
+
+      setTimeout(() => {
+        // Z tuşunu bırakarak dönüşümü kilitle
+        triggerKey(KEYS.Z, false);
+      }, 70);
+    }, 60);
+
+    transformTouchId = null;
+  }
+
+  transformZone.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    if (transformTouchId !== null) return;
+    const touch = e.changedTouches[0];
+    transformTouchId = touch.identifier;
+    startTransformTouch(touch.clientX, touch.clientY);
+  }, { passive: false });
+
+  window.addEventListener("touchmove", (e) => {
+    if (transformTouchId === null) return;
+    for (let i = 0; i < e.changedTouches.length; i++) {
+      const touch = e.changedTouches[i];
+      if (touch.identifier === transformTouchId) {
+        e.preventDefault();
+        handleTransformMove(touch.clientX, touch.clientY);
+        break;
+      }
+    }
+  }, { passive: false });
+
+  function onTransformTouchEnd(e) {
+    if (transformTouchId === null) return;
+    for (let i = 0; i < e.changedTouches.length; i++) {
+      if (e.changedTouches[i].identifier === transformTouchId) {
+        finishTransformTouch();
+        break;
+      }
+    }
+  }
+
+  window.addEventListener("touchend", onTransformTouchEnd);
+  window.addEventListener("touchcancel", onTransformTouchEnd);
+
+  // Fare desteği
+  let mouseTransformActive = false;
+  transformZone.addEventListener("mousedown", (e) => {
+    mouseTransformActive = true;
+    startTransformTouch(e.clientX, e.clientY);
+  });
+  window.addEventListener("mousemove", (e) => {
+    if (mouseTransformActive) {
+      handleTransformMove(e.clientX, e.clientY);
+    }
+  });
+  window.addEventListener("mouseup", () => {
+    if (mouseTransformActive) {
+      mouseTransformActive = false;
+      finishTransformTouch();
+    }
   });
 
   /* ==========================================================================
-     6. ÜST ÇUBUK VE KULLANICI ARAYÜZÜ ETKİLEŞİMLERİ
+     6. ÜST ÇUBUK VE REHBER
      ========================================================================== */
-  // Tam Ekran Butonu
   const btnFullscreen = document.getElementById("btn-fullscreen");
   btnFullscreen.addEventListener("click", () => {
     if (!document.fullscreenElement && !document.webkitFullscreenElement) {
@@ -1142,20 +1138,16 @@
     }
   });
 
-  // Dokunmatik Tuşları Göster / Gizle
   const btnToggleControls = document.getElementById("btn-toggle-controls");
   const touchControlsLayer = document.getElementById("touch-controls");
-  const quickAliensPanel = document.getElementById("quick-aliens");
   let controlsVisible = true;
 
   btnToggleControls.addEventListener("click", () => {
     controlsVisible = !controlsVisible;
     touchControlsLayer.style.display = controlsVisible ? "block" : "none";
-    quickAliensPanel.style.display = controlsVisible ? "flex" : "none";
     btnToggleControls.style.opacity = controlsVisible ? "1" : "0.6";
   });
 
-  // Rehber Modalını Aç / Kapat
   const modalInfo = document.getElementById("modal-info");
   const btnInfo = document.getElementById("btn-info");
   const btnCloseModal = document.getElementById("btn-close-modal");
@@ -1174,10 +1166,9 @@
     }
   });
 
-  // Masaüstünde dokunmatik cihaz değilse kontrolleri daha şeffaf başlat
   const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
   if (!isTouchDevice) {
-    document.documentElement.style.setProperty('--control-opacity', '0.65');
+    document.documentElement.style.setProperty('--control-opacity', '0.75');
   }
 </script>
 
